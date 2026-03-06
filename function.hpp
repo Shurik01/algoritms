@@ -22,6 +22,20 @@ using namespace std::chrono;
 /// @return массив arr
 float* random_array_increasing(float *arr, size_t size, int min_rand, int max_rand);
 
+/// @details время работы O(n)
+/// @brief функция, которая заполняет массив рандомными монотонно возрастающими значениями
+/// @param arr массив
+/// @param size размер массива
+/// @param min_rand минимальное генерируемое значение 
+/// @param max_rand максимальное генерируемое значение
+/// @return массив arr
+int* random_array_int_increasing(int *arr, size_t size, int min_rand, int max_rand);
+
+/// @brief вывод массива
+/// @param arr массив
+/// @param size размер массива
+void array_output(float *arr, size_t size);
+
 /// @brief функция, которая заполняет массив рандомными значениями
 /// @param arr массив
 /// @param min_rand минимальное генерируемое значение 
@@ -71,5 +85,40 @@ void time_ms(F func){
 /// @param arr массив
 /// @param size размер массива
 /// @param num искомое значение
-/// @return индекс первого вхождения искомого значения
-size_t find_num(float *arr, size_t size, float num);
+/// @return индекс первого вхождения искомого значения, если значение не найдено возвращает верхнюю границу типа size_t
+/// @details size_t(-1) происходит переполнение 
+template <typename T>
+size_t find_num(T* arr, size_t size, T num){
+    for (size_t i = 0; i < size; i++){
+        if (arr[i] == num){
+            return i;
+        }
+    }
+    return size_t(-1);
+};
+
+/// @brief возвращает 1, когда значение найдено, 0, если не найдено
+/// @param arr массив
+/// @param size размер массива
+/// @param num искомое значение
+/// @return индекс первого вхождения искомого значения, если значение не найдено возвращает верхнюю границу типа size_t
+/// @details size_t(-1) происходит переполнение 
+template <typename T>
+size_t find_num_bin(T* arr, size_t size, T num) {
+    size_t l = 0;
+    size_t r = size - 1;
+    
+    while (l < r) {
+        size_t mid = l + (r - l) / 2;
+        
+        if (arr[mid] == num) {
+            return mid;
+        }
+        if (arr[mid] < num) {
+            l = mid + 1;
+        } else {
+            r = mid;
+        }
+    }
+    return size_t(-1);
+}

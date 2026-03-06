@@ -11,7 +11,7 @@
 /// @param max_rand максимальное генерируемое значение
 /// @return массив arr
 float* random_array_increasing(float *arr, size_t size, int min_rand, int max_rand){
-
+    float diff = (max_rand - min_rand)/size;
     // Объект для доступа к аппаратному или программному источнику случайности
     // нужен для инициализации генератора случайных чисел
     std::random_device rd;
@@ -25,9 +25,44 @@ float* random_array_increasing(float *arr, size_t size, int min_rand, int max_ra
         std::uniform_real_distribution<> distr(min_rand, max_rand);
         arr[n] = distr(gen);
         min_rand = arr[n];
+        max_rand += diff;
+    }
+    return arr;
+}
+
+/// @details время работы O(n)
+/// @brief функция, которая заполняет массив рандомными монотонно возрастающими значениями
+/// @param arr массив
+/// @param size размер массива
+/// @param min_rand минимальное генерируемое значение 
+/// @param max_rand максимальное генерируемое значение
+/// @return массив arr
+int* random_array_int_increasing(int *arr, size_t size, int min_rand, int max_rand){
+    // Объект для доступа к аппаратному или программному источнику случайности
+    // нужен для инициализации генератора случайных чисел
+    std::random_device rd;
+
+    // Объект - генератор случайных чисел с seed (начальным значением) от random_device
+    std::mt19937 gen(rd());
+
+    for (size_t n = 0; n < size; ++n){
+        // Объект, отвечающий за конкретные парамеры (вид распределения, его параметры)
+        // выдаваемых случайных значений
+        std::uniform_int_distribution<> distr(min_rand, max_rand);
+        arr[n] = distr(gen);
+        min_rand = arr[n];
         max_rand += 10;
     }
     return arr;
+}
+
+/// @brief вывод массива
+/// @param arr массив
+/// @param size размер массива
+void array_output(float *arr, size_t size){
+    for (size_t i = 0; i < size; ++i){
+        std::cout << std::format("{:.3f}\n", arr[i]);
+    }
 }
 
 /// @details время работы O(n)
@@ -79,7 +114,7 @@ void create_txt_file(float *arr, size_t size, std::string filename)
     }
 }
 
-/// @brief функция, которая проверяет отсортирован ли массив
+/// @brief функция, которая проверяет отсортирован ли массив по возрастанию
 /// @param arr массив
 /// @param size размер массива
 /// @return 1, если массив отсортирован, 0 в другом случае
@@ -90,18 +125,4 @@ bool is_arr_sorted(float *arr, size_t size){
         }
     }
     return 1;
-}
-
-/// @brief возвращает 1, когда значение найдено, 0, если не найдено
-/// @param arr массив
-/// @param size размер массива
-/// @param num искомое значение
-/// @return индекс первого вхождения искомого значения
-size_t find_num(float *arr, size_t size, float num){
-    for (size_t i = 0; i < size; i++){
-        if (arr[i] == num){
-            return i;
-        }
-    }
-    return 0;
 }
