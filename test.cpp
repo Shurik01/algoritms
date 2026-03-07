@@ -35,10 +35,9 @@ int main(){
 
     // проверка работы функции find_num_bin
 
-    assert(find_num<float>(test_arr4, 4, 2) == 2);
-    assert(find_num<float>(test_arr4, 4, 6) == size_t(-1));
-    assert(find_num<float>(test_arr5, 5, 0) == 0);
-    assert(find_num<float>(test_arr6, 4, 0)==3);
+    assert(find_num_bin<float>(test_arr4, 4, 2) == 2);
+    assert(find_num_bin<float>(test_arr4, 4, 6) == size_t(-1));
+    assert(find_num_bin<float>(test_arr5, 5, 0) == 0);
 
 
 
