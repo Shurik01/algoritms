@@ -36,6 +36,11 @@ int* random_array_int_increasing(int *arr, size_t size, int min_rand, int max_ra
 /// @param size размер массива
 void array_output(float *arr, size_t size);
 
+/// @brief вывод массива
+/// @param arr массив
+/// @param size размер массива
+void array_int_output(int *arr, size_t size);
+
 /// @brief функция, которая заполняет массив рандомными значениями
 /// @param arr массив
 /// @param min_rand минимальное генерируемое значение 

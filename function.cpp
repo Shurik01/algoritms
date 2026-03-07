@@ -41,17 +41,22 @@ int* random_array_int_increasing(int *arr, size_t size, int min_rand, int max_ra
     // Объект для доступа к аппаратному или программному источнику случайности
     // нужен для инициализации генератора случайных чисел
     std::random_device rd;
-
     // Объект - генератор случайных чисел с seed (начальным значением) от random_device
     std::mt19937 gen(rd());
-
+    int diff = (max_rand - min_rand) / size + 1;
+    int me = max_rand;
+    max_rand = min_rand;
     for (size_t n = 0; n < size; ++n){
         // Объект, отвечающий за конкретные парамеры (вид распределения, его параметры)
         // выдаваемых случайных значений
+        max_rand += diff;
+        if (max_rand >= me){
+            max_rand = me;
+        }
         std::uniform_int_distribution<> distr(min_rand, max_rand);
         arr[n] = distr(gen);
         min_rand = arr[n];
-        max_rand += 10;
+        
     }
     return arr;
 }
@@ -64,6 +69,17 @@ void array_output(float *arr, size_t size){
         std::cout << std::format("{:.3f}\n", arr[i]);
     }
 }
+
+/// @brief вывод массива
+/// @param arr массив
+/// @param size размер массива
+void array_int_output(int *arr, size_t size){
+    for (size_t i = 0; i < size; ++i){
+        std::cout << arr[i] << "  ";
+    }
+    std::cout << std::endl;
+}
+
 
 /// @details время работы O(n)
 /// @brief функция, которая заполняет массив рандомными значениями
