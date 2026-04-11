@@ -56,12 +56,43 @@ int main(){
     arr = random_int_array(arr, n, -100, 100);
     arr2 = random_int_array(arr, n, -1000, 1000);
     arr3 = random_int_array(arr, n, -10000, 10000);
+    int* arr4 = new int[n];
+    random_array_int_increasing(arr4, n, -1000, 1000);
+    int* arr5 = new int[5]{2, 2, 8, 1, 4};
+    int* arr6 = new int[6]{9, 7, 6, 3, 2, 1};
     // добавить с повторами и отсортированные
     
     // тест функции selectionSort
     assert(is_arr_sorted(selectionSort(arr, n), n) == 1);
     assert(is_arr_sorted(selectionSort(arr2, n), n) == 1);
     assert(is_arr_sorted(selectionSort(arr3, n), n) == 1);
+    assert(is_arr_sorted(selectionSort(arr4, n), n) == 1);
+    assert(is_arr_sorted(selectionSort(arr5, 5), 5) == 1);
+    assert(is_arr_sorted(selectionSort(arr6, 6), 6) == 1);
+
+    delete[] arr5;
+    delete[] arr6;
+
+    arr = random_int_array(arr, n, -100, 100);
+    arr2 = random_int_array(arr, n, -1000, 1000);
+    arr3 = random_int_array(arr, n, -10000, 10000);
+    random_array_int_increasing(arr4, n, -1000, 1000);
+    arr5 = new int[5]{2, 2, 8, 1, 4};
+    arr6 = new int[6]{9, 7, 6, 3, 2, 1};
+
+    quicksort(arr, 0, n-1);
+    quicksort(arr2, 0, n-1);
+    quicksort(arr3, 0, n-1);
+    quicksort(arr4, 0, n-1);
+    quicksort(arr5, 0, 4);
+    quicksort(arr6, 0, 5);
+
+    assert(is_arr_sorted(arr, n) == 1);
+    assert(is_arr_sorted(arr2, n) == 1);
+    assert(is_arr_sorted(arr3, n) == 1);
+    assert(is_arr_sorted(arr4, n) == 1);
+    assert(is_arr_sorted(arr5, 5) == 1);
+    assert(is_arr_sorted(arr6, 6) == 1);
 
     delete[] test_arr1;
     delete[] test_arr2;
@@ -73,6 +104,9 @@ int main(){
     delete[] arr;
     delete[] arr2;
     delete[] arr3;
+    delete[] arr4;
+    delete[] arr5;
+    delete[] arr6;
 
     return 0;
 }
