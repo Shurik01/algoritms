@@ -41,6 +41,15 @@ void array_output(float *arr, size_t size);
 /// @param size размер массива
 void array_int_output(int *arr, size_t size);
 
+/// @details время работы в среднем, лучшем и худшем O(n)
+/// @brief функция, которая заполняет массив рандомными значениями
+/// @param arr массив
+/// @param size размер массива
+/// @param min_rand минимальное генерируемое значение 
+/// @param max_rand максимальное генерируемое значение
+/// @return массив arr
+int* random_int_array(int *arr, size_t size, int min_rand, int max_rand);
+
 /// @brief функция, которая заполняет массив рандомными значениями
 /// @param arr массив
 /// @param min_rand минимальное генерируемое значение 
@@ -52,8 +61,15 @@ float* random_array(float *arr, size_t size, int min_rand, int max_rand);
 /// @param arr массив
 /// @param size размер массива
 /// @return 1, если массив отсортирован, 0 в другом случае
-bool is_arr_sorted(float *arr, size_t size);
-
+template <typename T>
+bool is_arr_sorted(T *arr, size_t size){
+    for (size_t i = 1; i < size; i++){
+        if (arr[i-1] > arr[i]){
+            return 0;
+        }
+    }
+    return 1;
+}
 /// @brief функция, которая измеряет время выполнения в секундах
 /// @tparam F шаблон функции 
 /// @param func функция
@@ -85,13 +101,13 @@ void time_ms(F func){
     auto delta = duration_cast< milliseconds >(t1 - t0);
     std::cout << "time delta (milliseconds) " << delta.count();
 }
-
 /// @brief возвращает 1, когда значение найдено, 0, если не найдено
 /// @param arr массив
 /// @param size размер массива
 /// @param num искомое значение
 /// @return индекс первого вхождения искомого значения, если значение не найдено возвращает верхнюю границу типа size_t
 /// @details size_t(-1) происходит переполнение 
+/// @details время работы в среднем O(n), лучшем O(1), худшем O(n)
 template <typename T>
 size_t find_num(T* arr, size_t size, T num){
     for (size_t i = 0; i < size; i++){
@@ -108,6 +124,7 @@ size_t find_num(T* arr, size_t size, T num){
 /// @param num искомое значение
 /// @return индекс первого вхождения искомого значения, если значение не найдено возвращает верхнюю границу типа size_t
 /// @details size_t(-1) происходит переполнение 
+/// @details время работы в среднем O(logn), лучшем O(1), худшем O(logn)
 template <typename T>
 size_t find_num_bin(T* arr, size_t size, T num) {
     size_t l = 0;
@@ -126,4 +143,30 @@ size_t find_num_bin(T* arr, size_t size, T num) {
         }
     }
     return size_t(-1);
-}
+};
+
+/// @brief возвращает 1, когда значение найдено, 0, если не найдено, интерполяционный поис, предугадывает значение
+/// @param arr массив
+/// @param size размер массива
+/// @param num искомое значение
+/// @return индекс первого вхождения искомого значения, если значение не найдено возвращает верхнюю границу типа size_t
+/// @details size_t(-1) происходит переполнение 
+/// @details время работы в среднем O(log(logn)), лучшем O(1), худшем O(n)
+template <typename T>
+size_t find_num_interpolation(T* arr, size_t size, T num) {
+    size_t l = 0;
+    size_t r = size - 1;
+    while (l < r) {
+        size_t mid = l + ((num - arr[l] * (r - l)) / (arr[r] - arr[l]));
+        
+        if (arr[mid] == num) {
+            return mid;
+        }
+        if (arr[mid] < num) {
+            l = mid + 1;
+        } else {
+            r = mid;
+        }
+    }
+    return size_t(-1);
+};

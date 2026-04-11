@@ -3,7 +3,7 @@
 //Автор: Пархоменко Александра
 //модуль для функций
 
-/// @details время работы O(n)
+/// @details время работы в среднем, лучшем и худшем O(n)
 /// @brief функция, которая заполняет массив рандомными монотонно возрастающими значениями
 /// @param arr массив
 /// @param size размер массива
@@ -30,7 +30,7 @@ float* random_array_increasing(float *arr, size_t size, int min_rand, int max_ra
     return arr;
 }
 
-/// @details время работы O(n)
+/// @details время работы в среднем, лучшем и худшем O(n)
 /// @brief функция, которая заполняет массив рандомными монотонно возрастающими значениями
 /// @param arr массив
 /// @param size размер массива
@@ -61,6 +61,7 @@ int* random_array_int_increasing(int *arr, size_t size, int min_rand, int max_ra
     return arr;
 }
 
+/// @details время работы в среднем, лучшем и худшем O(n)
 /// @brief вывод массива
 /// @param arr массив
 /// @param size размер массива
@@ -70,6 +71,7 @@ void array_output(float *arr, size_t size){
     }
 }
 
+/// @details время работы в среднем, лучшем и худшем O(n)
 /// @brief вывод массива
 /// @param arr массив
 /// @param size размер массива
@@ -81,7 +83,7 @@ void array_int_output(int *arr, size_t size){
 }
 
 
-/// @details время работы O(n)
+/// @details время работы в среднем, лучшем и худшем O(n)
 /// @brief функция, которая заполняет массив рандомными значениями
 /// @param arr массив
 /// @param size размер массива
@@ -106,7 +108,32 @@ float* random_array(float *arr, size_t size, int min_rand, int max_rand){
     return arr;
 }
 
-/// @details время работы O(n)
+/// @details время работы в среднем, лучшем и худшем O(n)
+/// @brief функция, которая заполняет массив рандомными значениями
+/// @param arr массив
+/// @param size размер массива
+/// @param min_rand минимальное генерируемое значение 
+/// @param max_rand максимальное генерируемое значение
+/// @return массив arr
+int* random_int_array(int *arr, size_t size, int min_rand, int max_rand){
+
+    // Объект для доступа к аппаратному или программному источнику случайности
+    // нужен для инициализации генератора случайных чисел
+    std::random_device rd;
+
+    // Объект - генератор случайных чисел с seed (начальным значением) от random_device
+    std::mt19937 gen(rd());
+
+    for (size_t n = 0; n < size; ++n){
+        // Объект, отвечающий за конкретные парамеры (вид распределения, его параметры)
+        // выдаваемых случайных значений
+        std::uniform_int_distribution<> distr(min_rand, max_rand);
+        arr[n] = distr(gen);
+    }
+    return arr;
+}
+
+/// @details время работы в среднем, лучшем и худшем O(n)
 /// @brief создает текстовый файл с массивом, в названии файла не нужно указывать расширение
 /// @param arr массив
 /// @param size размер массива
@@ -128,17 +155,4 @@ void create_txt_file(float *arr, size_t size, std::string filename)
         }
         f.close(); // закрытие файла, в т.ч. запись файлового буфера на экран
     }
-}
-
-/// @brief функция, которая проверяет отсортирован ли массив по возрастанию
-/// @param arr массив
-/// @param size размер массива
-/// @return 1, если массив отсортирован, 0 в другом случае
-bool is_arr_sorted(float *arr, size_t size){
-    for (size_t i = 1; i < size; i++){
-        if (arr[i-1] > arr[i]){
-            return 0;
-        }
-    }
-    return 1;
 }
