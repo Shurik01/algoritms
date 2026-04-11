@@ -3,6 +3,9 @@
 #include "function.hpp"
 #include <cassert>
 #include <chrono>
+// https://github.com/ivtipm/Data-structures-and-algorithms/blob/main/tasks/task_recursion.md
+// время итеративной функции: 
+// время рекурсивной функции: 
 using namespace std;
 /// @brief функция сортировки массива простым выбором(итеративная)
 /// @param arr массив
@@ -43,24 +46,24 @@ int* selectionSort_rec(int* arr, size_t n, size_t idx = 0) {
 
 int main(){
     // размер массива
-    size_t n = 20;
+    size_t n = 10'000;
 
     // выделение памяти под массивы
     int* arr = new int[n];
     int* arr2 = new int[n];
     int* arr3 = new int[n];
     // заполнение массивов случайными числами
-    arr = random_int_array(arr, n, -100, 100);
-    arr2 = random_int_array(arr, n, -1000, 1000);
-    arr3 = random_int_array(arr, n, -10000, 10000);
+    arr = random_int_array(arr, n, -200'000, 200'000);
+    arr2 = random_int_array(arr, n, -200'000, 200'000);
+    arr3 = random_int_array(arr, n, -200'000, 200'000);
     
     // тест функции selectionSort
     assert(is_arr_sorted(selectionSort(arr, n), n) == 1);
     assert(is_arr_sorted(selectionSort(arr2, n), n) == 1);
     assert(is_arr_sorted(selectionSort(arr3, n), n) == 1);
-    arr = random_int_array(arr, n, -100, 100);
-    arr2 = random_int_array(arr, n, -1000, 1000);
-    arr3 = random_int_array(arr, n, -10000, 10000);
+    arr = random_int_array(arr, n, -200'000, 200'000);
+    arr2 = random_int_array(arr, n, -200'000, 200'000);
+    arr3 = random_int_array(arr, n, -200'000, 200'000);
     // тест функции selectionSort_rec
     assert(is_arr_sorted(selectionSort_rec(arr, n), n) == 1);
     assert(is_arr_sorted(selectionSort_rec(arr2, n), n) == 1);
@@ -71,7 +74,7 @@ int main(){
     auto t0 = steady_clock::now();
     // код, время выполнения которого нужно измерить
     for (size_t i = 0; i < 10'000; i++){
-        arr = random_int_array(arr, n, -100, 100);
+        arr = random_int_array(arr, n, -200'000, 200'000);
         selectionSort(arr, n);
         
     }
@@ -86,7 +89,7 @@ int main(){
     t0 = steady_clock::now();
     // код, время выполнения которого нужно измерить
     for (size_t i = 0; i < 10'000; i++){
-        arr = random_int_array(arr, n, -100, 100);
+        arr = random_int_array(arr, n, -200'000, 200'000);
         selectionSort_rec(arr, n);
         
     }
