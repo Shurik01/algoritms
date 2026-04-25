@@ -120,14 +120,14 @@ int* random_int_array(int *arr, size_t size, int min_rand, int max_rand){
     // Объект для доступа к аппаратному или программному источнику случайности
     // нужен для инициализации генератора случайных чисел
     std::random_device rd;
-
+    
     // Объект - генератор случайных чисел с seed (начальным значением) от random_device
     std::mt19937 gen(rd());
-
+    // Объект, отвечающий за конкретные парамеры (вид распределения, его параметры)
+    // выдаваемых случайных значений
+    std::uniform_int_distribution<> distr(min_rand, max_rand);
     for (size_t n = 0; n < size; ++n){
-        // Объект, отвечающий за конкретные парамеры (вид распределения, его параметры)
-        // выдаваемых случайных значений
-        std::uniform_int_distribution<> distr(min_rand, max_rand);
+        
         arr[n] = distr(gen);
     }
     return arr;
