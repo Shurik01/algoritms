@@ -2,6 +2,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <algorithm>
+#include "mysorts.hpp"
 template <typename T>
 class DynamicArray{
     T* arr = nullptr;   //указатель на область памяти
@@ -10,12 +11,12 @@ class DynamicArray{
     
     public:
 
-    /// @brief конструктор класса, capacity по умолчанию равно 1 
+    /// @brief конструктор класса, capacity по умолчанию равно 1(время О(1))
     DynamicArray(){
         arr = new T[capacity];
     }
 
-    /// @brief при создании задает необходимую емкость
+    /// @brief при создании задает необходимую емкость(время O(1))
     /// @param new_capacity 
     DynamicArray(size_t new_capacity){
         if (new_capacity > 0){
@@ -27,16 +28,60 @@ class DynamicArray{
         }
     }
 
-    /// @brief конструктор копирования
+    /// @brief конструктор копирования(время O(n))
     /// @param other массив, из которого копируются данные
     DynamicArray(const DynamicArray<T>& other) {
         capacity = other.capacity;
         size = other.size;
-        arr = new T[this->capacity];
+        arr = new T[capacity];
         std::copy(other.arr, other.arr + other.size, arr);
     }
 
+    /// @brief оператор присваивания копированием(время O(n))
+    /// @param other массив, из которого копируются данные
+    /// @return ссылку на текущий объект 
+    DynamicArray<T>& operator=(const DynamicArray<T>& other) {
+        if (this != &other) { // Защита от самоприсваивания
+            // Освобождаем старую память
+            if (arr != nullptr) delete[] arr;
+
+            // Выделяем память и копируем поля
+            capacity = other.capacity;
+            size = other.size;
+            arr = new T[capacity];
+            std::copy(other.arr, other.arr + other.size, arr);
+        }
+        return *this;
+    }
+
+    /// @brief конструктор перемещения
+    /// @param other временный массив, у которого забираются ресурсы(время О(1))
+    DynamicArray(DynamicArray<T>&& other) noexcept : arr(other.arr), size(other.size), capacity(other.capacity) {
+        other.arr = nullptr;
+        other.size = 0;
+        other.capacity = 1;
+    }
+
+    /// @brief оператор присваивания перемещением(время O(1))
+    /// @param other временный массив, у которого забираются ресурсы
+    /// @return ссылку на текущий объект
+    DynamicArray<T>& operator=(DynamicArray<T>&& other) noexcept {
+        if (this != &other) { // Защита от самоприсваивания
+            if (arr != nullptr) delete[] arr;
+            arr = other.arr;
+            size = other.size;
+            capacity = other.capacity;
+
+            other.arr = nullptr;
+            other.size = 0;
+            other.capacity = 1;
+        }
+        return *this;
+    }
+
+
     /// @brief деструктор
+    
     ~DynamicArray(){
         if (arr != nullptr) delete[] arr;
     }
@@ -117,7 +162,7 @@ class DynamicArray{
         push(0, data);
     }
 
-    /// @brief вставка в конец
+    /// @brief удаление последнего элемента
     void pop_back(){
         if (size > 0){
             size--;
@@ -130,13 +175,10 @@ class DynamicArray{
         }
     }
 
-    /// @brief удаление элемента с конца
+    /// @brief удаление элемента
     /// @param idx индекс элемента, который нужно удалить
     void pop(size_t idx){
-        if (size == 0){
-            throw std::out_of_range("Массив пуст!");
-        }
-        if (idx < size){
+        if (idx < (size-1)){
             for (size_t i = idx+1; i < size; i++){
                 arr[i-1] = arr[i];
             }
@@ -153,6 +195,11 @@ class DynamicArray{
     /// @brief удаление элемента из начала
     void pop_front(){
         pop(0);
+    }
+
+    /// @brief сортировка Шелла(по возрастанию)
+    void ShellSort(){
+        shellSort(arr, size);
     }
 
 

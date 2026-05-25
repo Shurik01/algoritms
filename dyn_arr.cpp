@@ -24,9 +24,9 @@ int main(){
     arr.pop_back();
     assert(arr.get_size() == 2);
 
-    // arr(2, 6, 8, 9)
     arr.push_back(8);
     arr.push_back(9);
+    // arr(2, 6, 8, 9)
     arr.pop_front();
     assert(arr[0] == 6);
     assert(arr[1] == 8);
@@ -35,5 +35,13 @@ int main(){
     arr.pop(1);
     assert(arr[0] == 6);
     assert(arr[1] == 9);
+    // arr(6, 9)
+
+    // проверка правильно ли работает конструктор копированием
+    DynamicArray<int> arr2=arr;
+    assert(arr2.get_size() == 2);
+    assert(arr2[0] == 6);
+    assert(arr2[1] == 9);
+    assert(arr2.get_capacity() == 10);
     return 0;
 }
