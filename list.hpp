@@ -30,7 +30,7 @@ class List{
         Node<T>* get_node(size_t idx) const{
             if (idx >= size){
                 // бросает исключение, если обращаемся к индексу вне границ списка
-                throw::std::out_of_range("Индекс выходит за границы списка")
+                throw::std::out_of_range("Индекс выходит за границы списка");
             }
             Node<T>* current = head;
             for (size_t i = 0; i < idx; i++){
@@ -148,7 +148,7 @@ class List{
             }
             if (idx < size){
                 Node<T>* current = get_node(idx);
-                Node<T>* newNode = newNode<T>(data);
+                Node<T>* newNode = new Node<T>(data);
                 newNode->prev = current->prev;
                 newNode->next = current;
                 current->prev->next = newNode;
@@ -159,7 +159,7 @@ class List{
 
         /// @brief удаление элемента с конца списка(O(1))
         void pop_back(){
-            if (tail == nulptr) return;
+            if (tail == nullptr) return;
             Node<T>* temp = tail;
             tail = tail->prev;
             if (tail != nullptr){
@@ -174,7 +174,7 @@ class List{
 
         /// @brief удаление элемента в начале списка(O(1))
         void pop_front(){
-            if (head == nulptr) return;
+            if (head == nullptr) return;
             Node<T>* temp = head;
             head = head->next;
             if (head != nullptr){
@@ -222,7 +222,7 @@ class List{
         }
 
         /// @brief присоединяет к текущуму списку другой(O(n))
-        void union(const List& other){
+        void association(const List& other){
             Node<T>* current = other.head;
             while (current != nullptr){
                 push_back(current->data);
