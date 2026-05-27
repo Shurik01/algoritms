@@ -96,6 +96,8 @@ void merge(T* arr, size_t left, size_t mid, size_t right)
     // пока в обоих массивах есть элементы
     while (left + idx_left < mid && mid + idx_right < right)
     {
+        // memcpy
+
         // если элемент в левом массиве меньше элемента в правом
         if (arr[left + idx_left] < arr[mid + idx_right])
         {
@@ -131,10 +133,16 @@ void merge(T* arr, size_t left, size_t mid, size_t right)
     {
         arr[left + i] = result[i];
     }
+
+    //arr[i] === *(arr + i)
+
+    // можно ли std::copy?
+    //memcpy(arr + left, result, (idx_left + idx_right) * sizeof T);
+
     delete[] result;
 }
 
-/// @brief функция сортировки слиянием
+/// @brief функция сортировки слиянием по возрастанию
 /// @tparam T тип элементов массива
 /// @param arr массив
 /// @param left левая граница массива(при вызове функции 0)
@@ -154,7 +162,7 @@ void mergeSort(T* arr, size_t left, size_t right)
     merge(arr, left, mid, right);
 }
 
-/// @brief сортировка Шелла
+/// @brief сортировка Шелла(по возрастанию)
 /// @tparam T тип элементов массива
 /// @param arr массив
 /// @param size размер массива
