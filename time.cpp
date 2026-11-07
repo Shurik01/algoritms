@@ -1,37 +1,104 @@
 #include "function.hpp"
+#include "mysorts.hpp"
 #include <chrono>
 using namespace std::chrono;
 using namespace std;
 int main(){
     time(nullptr);
-    std::random_device rd;
-
-    // Объект - генератор случайных чисел с seed (начальным значением) от random_device
-    std::mt19937 gen(rd());
-
     //размер массива
-    size_t size = 100'000;
+    size_t size = 100;
     // Переменная для суммирования времени в наносекундах
-    long long total_nanoseconds = 0;
-    int *test_arr1 = new int[size];
-    test_arr1 = random_array_int_increasing(test_arr1, size, -100'000, 100'000);
-    // выдаваемых случайных значений
-    std::uniform_int_distribution<> distr(-100'000, 100'000);
-    //float random_num = test_arr1[distr(gen)];
+    cout << "Сортировка простым выбором " << endl << endl << endl;
     // начальная отметка времени
-    auto t0 = steady_clock::now();
-    // код, время выполнения которого нужно измерить
-    for (size_t i = 0; i < 100'000; i++){
-        int num = distr(gen);
+    for (size_t i = 100; i < 10'000; i+=1'000){
+        long long total_nanoseconds = 0;
+        double total_milliseconds = 0;
         
-        find_num<int>(test_arr1, size, num);
-        
+        int *test_arr1 = new int[size];
+        for (size_t i = 0; i < 10000; i++){
+            
+            test_arr1 = random_int_array(test_arr1, size, -100'000'000, 100'000'000);
+            auto t0 = steady_clock::now();
+            // код, время выполнения которого нужно измерить
+            selectionSort(test_arr1, size);
+            auto t1 = steady_clock::now();
+            total_nanoseconds += duration_cast<nanoseconds>(t1 - t0).count();
+            total_milliseconds = total_nanoseconds / 10'000'000'000.0;
+        }
+        delete[] test_arr1;
+        // конечная отметка времени
+        cout << size <<"," << total_milliseconds << endl;
+        size += 1'000;
     }
-    // конечная отметка времени
-    auto t1 = steady_clock::now();
-    total_nanoseconds += duration_cast<nanoseconds>(t1 - t0).count();
-    double total_milliseconds = total_nanoseconds / 1'000'000.0;
+    size = 100;
+    cout << "Быстрая сортировка" << endl << endl << endl;
+    // начальная отметка времени
+    for (size_t i = 100; i < 10'000; i+=1'000){
+        long long total_nanoseconds = 0;
+        double total_milliseconds = 0;
+        int *test_arr1 = new int[size];
+        for (size_t i = 0; i < 10'000; i++){
+            
+            test_arr1 = random_int_array(test_arr1, size, -100'000'000, 100'000'000);
+            auto t0 = steady_clock::now();
+            // код, время выполнения которого нужно измерить
+            quicksort(test_arr1, 0, size-1);
+            auto t1 = steady_clock::now();
+            total_nanoseconds += duration_cast<nanoseconds>(t1 - t0).count();
+            total_milliseconds = total_nanoseconds / 10'000'000'000.0;
+        }
+        delete[] test_arr1;
+        // конечная отметка времени
+        cout << size <<"," << total_milliseconds << endl;
+        size += 1'000;
+    }
+
+    size = 100;
+    cout << "Быстрая сортировка" << endl << endl << endl;
+    // начальная отметка времени
+    for (size_t i = 100; i < 10'000; i+=1'000){
+        long long total_nanoseconds = 0;
+        double total_milliseconds = 0;
+        int *test_arr1 = new int[size];
+        for (size_t i = 0; i < 10'000; i++){
+            
+            test_arr1 = random_int_array(test_arr1, size, -100'000'000, 100'000'000);
+            auto t0 = steady_clock::now();
+            // код, время выполнения которого нужно измерить
+            mergeSort(test_arr1, 0, size);
+            auto t1 = steady_clock::now();
+            total_nanoseconds += duration_cast<nanoseconds>(t1 - t0).count();
+            total_milliseconds = total_nanoseconds / 10'000'000'000.0;
+        }
+        delete[] test_arr1;
+        // конечная отметка времени
+        cout << size <<"," << total_milliseconds << endl;
+        size += 1'000;
+    }
+
+    size = 100;
+    cout << "Сортировка Шелла" << endl << endl << endl;
+    for (size_t i = 100; i < 100'000; i+=1'000){
+        long long total_nanoseconds = 0;
+        double total_milliseconds = 0;
+        int *test_arr1 = new int[size];
+        for (size_t i = 0; i < 10'000; i++){
+            
+            test_arr1 = random_int_array(test_arr1, size, -100'000'000, 100'000'000);
+            auto t0 = steady_clock::now();
+            // код, время выполнения которого нужно измерить
+            shellSort(test_arr1, size);
+            auto t1 = steady_clock::now();
+            total_nanoseconds += duration_cast<nanoseconds>(t1 - t0).count();
+            total_milliseconds = total_nanoseconds / 10'000'000'000.0;
+        }
+        delete[] test_arr1;
+        // конечная отметка времени
+        cout << size <<"," << total_milliseconds << endl;
+        size += 1'000;
+    }
     
-    cout << "Total time: " << total_milliseconds << " ms" << endl;
-    delete[] test_arr1;
+    
+    
+    return 0;
 }
