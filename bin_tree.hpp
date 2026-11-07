@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stdexcept>
+#include <queue>
 using namespace std;
 
 // @brief узел списка
@@ -67,15 +68,67 @@ class BinaryTree{
             clearHelper(node->left);
             clearHelper(node->right);
             delete node;
+        }
+
+        /// @brief 
+        /// @param root 
+        /// @param order 1 - прямой, 0 - обратный
+        void leftOrderHelper(Node<T>* root, bool order){
+            if (order == 1){
+                if (node == nullptr) return;
+                cout << root->data << " ";
+                leftOrderHelper(root->left, 1);
+                leftOrderHelper(root->right, 1);
             }
+
+            if (order == 0){
+                if (node == nullptr) return;
+                leftOrderHelper(root->left, 0);
+                leftOrderHelper(root->right, 0);
+                cout << root->data << " ";
+            }
+        }
+
+        /// @brief 
+        /// @param root 
+        /// @param order 1 - прямой, 0 - обратный
+        void rightOrderHelper(Node<T>* root, bool order){
+            if (order == 1){
+                if (node == nullptr) return;
+                cout << root->data;
+                rightOrderHelper(root->right, 1);
+                rightOrderHelper(root->left, 1);
+            }
+
+            if (order == 0){
+                if (node == nullptr) return;
+                rightOrderHelper(root->right, 0);
+                rightOrderHelper(root->left, 0);
+                cout << root->data;
+            }
+        }
+
+
+
     public:
         /// @brief конструктор
         BinaryTree(): root(nullptr){    
         };
 
         /// @brief деструктор 
-        ~Tree(){
-            clear();
+        ~BinaryTree(){
+            clearHelper(root);
+        }
+
+        /// @brief 
+        /// @param order 1 - прямой обход, 0 - обратный обход 
+        void leftOrder(bool order){
+            leftOrderHelper(root, order);
+        }
+        /// @brief 
+        /// @param order 1 - прямой обход, 0 - обратный обход
+        void rightOrder(bool order){
+            rightOrderHelper(root, order);
         }
 
         /// @brief функция вставки элемента к нужному родителю
@@ -84,19 +137,24 @@ class BinaryTree{
         /// @param flag в какую сторону вставить, 0 - влево, 1 - вправо
         /// @return 
         Node<T>* insert(T data, Node<T>* parent, bool flag){
-            if (flag == False){
-                if (parent->left == nullptr){
-                    Node<T>* newNode = new Node<T>(data);
-                    parent -> left = newNode;
+            if (parent != nullptr){
+                if (flag == 0){
+                    if (parent->left == nullptr){
+                        Node<T>* newNode = new Node<T>(data);
+                        parent -> left = newNode;
+                        return parent -> left;
+                    }
+                    return;
                 }
-                return;
-            }
-            else{
-                if (parent->right==nullptr){
-                    Node<T>* newNode = new Node<T>(data);
-                    parent->right = newNode;
+                else{
+                    if (parent->right==nullptr){
+                        Node<T>* newNode = new Node<T>(data);
+                        parent->right = newNode;
+                        return parent -> right;
+                    }
                 }
             }
+            return nullptr;
         }
         
 
@@ -124,6 +182,10 @@ class BinaryTree{
         /// @brief вывод дерева в порядке по возрастанию
         void bsf(){
             Node<T>* current = root;
+            
+        }
+
+        void bsf_reverse(){
             
         }
 
