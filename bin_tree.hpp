@@ -25,42 +25,10 @@ class BinaryTree{
         // поле, которое хранит указатель на начало списка
         Node<T>* root;
 
-        void popHelper(Node<T>*& node, T data){
-            if (node == nullptr) return;
-
-            if (data < node->data){
-                popHelper(node->left, data);
-            }
-            else if (data > node->data){
-                popHelper(node->right, data);
-            }
-            else {
-                // нашли узел
-                if (node->left == nullptr && node->right == nullptr){
-                    delete node;
-                    node = nullptr;
-                }
-                else if (node->left == nullptr){
-                    Node<T>* tmp = node;
-                    node = node->right;
-                    delete tmp;
-                }
-                else if (node->right == nullptr){
-                    Node<T>* tmp = node;
-                    node = node->left;
-                    delete tmp;
-                }
-                else {
-                    Node<T>* minParent = node;
-                    Node<T>* minNode = node->right;
-                    while (minNode->left){
-                        minParent = minNode;
-                        minNode = minNode->left;
-                    }
-                    node->data = minNode->data;
-                    popHelper(node->right, minNode->data);   
-                }
-            }
+        /// @brief функция для удаления узла дерева(с поддеревом)
+        /// @param node узел дерева для удаления
+        void popHelper(Node<T>*& node){
+            clearHelper(node);
         }
 
         void clearHelper(Node<T>* node){
@@ -174,19 +142,41 @@ class BinaryTree{
             return nullptr;
         }
 
-        /// @brief 
-        void remove(T data){
-            popHelper(root, data);
+        /// @brief удаляет узел вместе с поддеревом
+        void remove(Node<T>* node){
+            popHelper(node);
         }
 
         /// @brief вывод дерева в порядке по возрастанию
-        void bsf(){
-            Node<T>* current = root;
-            
-        }
-
-        void bsf_reverse(){
-            
+        /// @details 1 - прямой(сверху вниз), 0 - обратный(снизу вверх)
+        void bfs(bool order){
+            if (root == nullptr) return;
+            queue<Node<T>*> q;
+            q.push(root);
+            if (bool == 1){
+                while(!q.empty()){
+                    Node<T>* cur = q.front();
+                    q.pop();
+                    cout << cur->data << " ";
+                    if (cur -> left){
+                        q.push(cur->left);
+                    }
+                    if (cur ->right){
+                        q.push(cur->right);
+                    }
+                }
+            }
+            if (bool == 0){
+                while(!q.empty){
+                    Node<T>* cur = q.front();
+                    if (cur -> left){
+                        q.push(cur->left);
+                    }
+                    if (cur -> right){
+                        q.push(cur -> right);
+                    }
+                }
+            }
         }
 
         /// левый обход, правый обход, в ширину(прямой, обратный), симметричный обход(необяз)
