@@ -72,9 +72,10 @@ class BinarySearchTree{
         };
 
         /// @brief деструктор 
-        ~Tree(){
-            clear();
+        ~BinarySearchTree(){
+            clearHelper(root);
         }
+
         /// @brief вставка
         /// @param data данные
         void insert(T data){
